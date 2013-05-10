@@ -3,13 +3,13 @@
 byte xc,yc;  //this is the cursor position
 byte CurrentColor; //color of the dot to be painted down
 byte BrushColor; //color of the brush
+
 byte Brush; //the brush
+unsigned long LastTime; //a long variable for time, in milliseconds
 
-unsigned long LastTime;
+#define DelayTime_ms 50 //time between blinking of cursor
 
-
-
-void setup()
+void setup() //run this once when meggy is turned on
 {
   
   MeggyJrSimpleSetup();
@@ -21,11 +21,18 @@ void setup()
   CurrentColor = 0;
   BrushColor = 1;
   
+  Brush = 0;
+  
+  LastTime = millis();
+  
 }
 
 
 void loop()
 {
+  
+  byte CursorColor;
+  
   
   CheckButtonsPress();
   
@@ -39,7 +46,7 @@ void loop()
   
   if (Button_A)
   {
-    if (BrushColor > White)
+    if (BrushColor <= White)
       
       if (CurrentColor != BrushColor)
       {
@@ -54,7 +61,6 @@ void loop()
   if (Button_Up)
   {
     DrawPx(xc,yc,CurrentColor);
-   
     if (yc < 7)
       yc++;
     else
@@ -65,7 +71,6 @@ void loop()
   if (Button_Down)
   {
     DrawPx(xc,yc,CurrentColor);
-   
     if (yc > 0)
       yc--;
     else
@@ -76,7 +81,6 @@ void loop()
   if (Button_Right)
   {
     DrawPx(xc,yc,CurrentColor);
-   
     if (xc < 7)
       xc++;
     else
@@ -87,7 +91,6 @@ void loop()
   if (Button_Left)
   {
     DrawPx(xc,yc,CurrentColor);
-   
     if (xc > 0)
       xc--;
     else
@@ -95,25 +98,30 @@ void loop()
     CurrentColor = ReadPx(xc,yc);
   }
   
-  byte CursorColor;
+  if (CurrentColor == BrushColor)
+    CursorColor = Dark;
+  else   
+    CursorColor = BrushColor;
   
-  DrawPx(xc,yc,BrushColor);
+  if ((millis() - LastTime) > DelayTime_ms)
+  {
+   Brush++;
+   if (Brush > 2)
+   {
+     DrawPx(xc,yc,CursorColor); //display the cursor
+     Brush = 0;
+   }
+   else
+     DrawPx(xc,yc,CurrentColor);
+     
+   LastTime = millis();
+  }
   
   DisplaySlate();
   
 
   
 }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   
