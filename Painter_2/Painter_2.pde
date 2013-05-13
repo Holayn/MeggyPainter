@@ -1,5 +1,6 @@
-#include <MeggyJrSimple.h>
 
+#include <MeggyJrSimple.h>
+//meggybrite
 byte xc,yc;  //this is the cursor position
 byte CurrentColor; //color of the dot to be painted down
 byte BrushColor; //color of the brush

@@ -1,5 +1,5 @@
 #include <MeggyJrSimple.h>
-
+//meggy brite cursor code
 byte xc,yc;  //this is the cursor position
 byte CurrentColor; //color of the dot to be painted down
 byte BrushColor; //color of the brush
@@ -8,6 +8,19 @@ byte Brush; //the brush
 unsigned long LastTime; //a long variable for time, in milliseconds
 
 int whatsave = 1;
+
+struct Point //points used for the drawing that the player must copy from memory
+{
+  int x;
+  int y;
+  int color;
+};
+
+Point s1 = {0,0,1};
+Point s2 = {1,1,2};
+Point s3 = {2,2,3};
+
+Point Shape[3] = {s1,s2,s3};
 
 #define DelayTime_ms 50 //time between blinking of cursor
 
@@ -65,12 +78,12 @@ void AuxLights()
 {
    if (whatsave == 1) SetAuxLEDsBinary(B10000000);    
    if (whatsave == 2) SetAuxLEDsBinary(B11000000);
-   if (whatsave == 3) SetAuxLEDsBinary(B11100000); 
+   /*if (whatsave == 3) SetAuxLEDsBinary(B11100000); 
    if (whatsave == 4) SetAuxLEDsBinary(B11110000);   
    if (whatsave == 5) SetAuxLEDsBinary(B11111000);   
    if (whatsave == 6) SetAuxLEDsBinary(B11111100);
    if (whatsave == 7) SetAuxLEDsBinary(B11111110); 
-   if (whatsave == 8) SetAuxLEDsBinary(B11111111); 
+   if (whatsave == 8) SetAuxLEDsBinary(B11111111); */
 }
 
 void LoadPaint()  
@@ -79,13 +92,14 @@ void LoadPaint()
   {
     if (whatsave == 1)
     {
+      ClearSlate();
       BlankLoad();
     }
- /*   if (whatsave == 2)
+/*    if (whatsave == 2)
     {
       Load1();
     }
-    if (whatsave == 3)
+    /*if (whatsave == 3)
     {
       Load2();
     }
@@ -114,7 +128,7 @@ void LoadPaint()
 }
   
   
-void BlankLoad()
+void BlankLoad() //this is the painter program, quite similar to meggy brite.
 {
   {
   
@@ -208,12 +222,63 @@ void BlankLoad()
 }
 
 
-/*void Load1()
+void Load1()
 {
- 
+  BlankLoad(); //run the painter program!
+  for (int i = 0; i < 4; i++)
+  {
+    DrawPx(Shape[i].x, Shape[i].y, Shape[i].color); //draw the shape thingy
+  }
+  if (Button_A)
+  {
+    if (Button_B)
+    {
+      checkMatch(); //check to see if what the player drew is the same as the array
+    }
+  }
+    
 }
 
-void Load2()
+void Win()
+{
+  for (int i=0; i<8; i++)
+  {
+    for (int y=0; y<8; y++)
+    {
+      DrawPx(i,y,Yellow);
+    }
+  }
+  DisplaySlate();
+  delay(1000);
+  ClearSlate();
+}
+
+ void checkMatch() //checking to see if what the player drew matches up to what is in the array
+ {
+   for (int x = 0; x < 8; x++)
+   {
+     for (int y = 0; y < 8; y++)
+      {
+        if (ReadPx(x,y) !=0)
+        {
+          for (int k = 0; k < 3; k++)
+          {
+            if (Shape[k].x == x && Shape[k].y == y && Shape[k].color == CurrentColor);
+            {
+              ClearSlate(); //delete everything
+              break;
+            }
+          }
+        }
+      }
+    }
+   Win();
+ }
+
+
+
+
+/*void Load2()
 {
   DrawPx(3,3,3)
 }
