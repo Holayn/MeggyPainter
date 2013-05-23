@@ -150,7 +150,7 @@ void loop()
     }
     if (Button_A) //setting the array. whatever coordinate the player is at, it stores it into the array
     {
-      Tone_Start(ToneC3, 50);
+      Tone_Start(ToneC6, 50);
       Serial.println("A");
       CheckButtonsDown(); //checks for the player holding down the buttons
       if (Button_B) CheckWin(); //if button A and B are being held down, run CheckWin
@@ -280,6 +280,7 @@ void loop()
       Serial.println("B");
 //     for (int i=0; i<7; i++) //cycles through the colors
 //      {
+        Tone_Start(ToneF5,50);
         colorc = colorc + 1;
          if (colorc > 7)
          {
