@@ -1,4 +1,4 @@
-//Meggy Painter Game! by Kai Wong
+//MeggyMatch Game! by Kai Wong
 //Paint to match up the picture that is shown!
 //Hold down BA to check!
 
